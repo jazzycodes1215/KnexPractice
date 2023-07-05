@@ -1,7 +1,7 @@
 const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT =  3000;
 const knex = require('knex')(require('../knexfile.js')[process.env.NODE_ENV||'development']);
 
 app.use(express.json());
@@ -21,6 +21,16 @@ app.get('/clients', function(req, res) {
       })
     );
 });
+
+app.post('/', (req, res) => {
+  res.send('POST request to homepage')
+
+  knex('client')
+    .insert({id: req.params.id, name: req.params.name})
+    .then(data => console.log(data))
+
+    console.log('done!')
+})
 
 app.listen(PORT, () => {
   console.log(`The server is running on ${PORT}`);
